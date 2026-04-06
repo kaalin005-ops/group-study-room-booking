@@ -3,76 +3,96 @@
 @tailwind utilities;
 
 :root {
-  --glass-bg: rgba(255, 255, 255, 0.1);
-  --glass-border: rgba(255, 255, 255, 0.2);
-  --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+  /* Study Room Theme - Wood, Paper, Forest Green, Warm Light */
+  --theme-wood: #3d2b1f;
+  --theme-wood-light: #5d4037;
+  --theme-paper: #fdfaf5;
+  --theme-forest: #2d4a3e;
+  --theme-forest-light: #3e6b5a;
+  --theme-gold: #c5a059;
+  --theme-cream: rgba(253, 250, 245, 0.9);
+  
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(61, 43, 31, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(61, 43, 31, 0.1);
 }
 
 body {
   margin: 0;
   padding: 0;
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  color: white;
+  /* Warm Library Atmosphere */
+  background: radial-gradient(circle at center, #fdfaf5 0%, #f5eee0 100%);
+  color: #3d2b1f;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
 }
 
 .glass-morphism {
   background: var(--glass-bg);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--glass-border);
   box-shadow: var(--glass-shadow);
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: 1rem;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(61, 43, 31, 0.08);
+  border-radius: 1.25rem;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .glass-card:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  transform: translateY(-5px);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  background: #ffffff;
+  border: 1px solid rgba(197, 160, 89, 0.3);
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(61, 43, 31, 0.12);
 }
 
 .glass-input {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: white;
-  padding: 0.75rem 1rem;
-  border-radius: 0.5rem;
+  background: #ffffff;
+  border: 1.5px solid rgba(61, 43, 31, 0.1);
+  color: #3d2b1f;
+  padding: 0.85rem 1.1rem;
+  border-radius: 0.75rem;
   outline: none;
-  transition: all 0.2s;
+  transition: all 0.3s ease;
 }
 
 .glass-input:focus {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.3);
+  border-color: #c5a059;
+  box-shadow: 0 0 0 4px rgba(197, 160, 89, 0.1);
 }
 
 .glass-button {
-  background: rgba(255, 255, 255, 0.15);
-  backdrop-filter: blur(4px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 0.5rem;
-  font-weight: 600;
-  transition: all 0.2s;
+  background: #2d4a3e;
+  color: #fdfaf5;
+  padding: 0.85rem 1.75rem;
+  border-radius: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.025em;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   cursor: pointer;
+  border: none;
+  box-shadow: 0 4px 12px rgba(45, 74, 62, 0.2);
 }
 
 .glass-button:hover {
-  background: rgba(255, 255, 255, 0.25);
-  transform: scale(1.02);
+  background: #3e6b5a;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(45, 74, 62, 0.3);
 }
 
 .glass-button:active {
-  transform: scale(0.98);
+  transform: translateY(0);
 }
+
+/* Study Theme Utility Classes */
+.text-wood { color: #3d2b1f; }
+.text-forest { color: #2d4a3e; }
+.bg-wood { background-color: #3d2b1f; }
+.bg-paper { background-color: #fdfaf5; }
+.bg-forest { background-color: #2d4a3e; }
+.border-gold { border-color: #c5a059; }

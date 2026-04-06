@@ -62,7 +62,10 @@ const createBooking = async (req, res) => {
     participants: [req.user.id]
   });
 
-  res.status(201).json(booking);
+  const populatedBooking = await Booking.findById(booking._id)
+    .populate('roomId', 'name type capacity');
+
+  res.status(201).json(populatedBooking);
 };
 
 // @desc    Cancel a booking

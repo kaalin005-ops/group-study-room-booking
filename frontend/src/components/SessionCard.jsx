@@ -10,38 +10,40 @@ const SessionCard = ({ session }) => {
   return (
     <motion.div
       whileHover={{ scale: 1.02 }}
-      className="glass-card p-6 flex flex-col justify-between border-indigo-400/20"
+      className="glass-card p-6 flex flex-col justify-between border-indigo-400/20 !bg-white"
     >
       <div className="space-y-4">
         <div className="flex justify-between items-start">
           <div className="flex items-center gap-3">
-            <div className={`p-3 rounded-2xl ${isActive ? 'bg-indigo-500/30 text-indigo-300' : 'bg-white/5 text-white/30'} border border-white/10`}>
+            <div className={`p-3 rounded-2xl ${isActive ? 'bg-indigo-500/10 text-indigo-600' : 'bg-wood/5 text-wood/30'} border border-wood/10`}>
               <Video size={24} />
             </div>
             <div>
-              <h3 className="text-lg font-bold text-white leading-tight">Virtual Session</h3>
-              <p className="text-indigo-200/50 text-xs font-medium uppercase tracking-wider">{session.roomId.name}</p>
+              <h3 className="text-lg font-bold text-wood leading-tight">Virtual Session</h3>
+              <p className="text-wood/40 text-xs font-medium uppercase tracking-wider">
+                {session.roomId?.name || 'Virtual Space'}
+              </p>
             </div>
           </div>
           {isActive && (
-            <span className="flex items-center gap-1.5 px-2 py-1 bg-rose-500/20 text-rose-300 rounded-full text-[10px] font-bold uppercase tracking-widest animate-pulse border border-rose-500/30">
+            <span className="flex items-center gap-1.5 px-2 py-1 bg-rose-500/10 text-rose-700 rounded-full text-[10px] font-bold uppercase tracking-widest animate-pulse border border-rose-500/20">
               Live
             </span>
           )}
         </div>
 
         <div className="space-y-3 py-2">
-          <div className="flex items-center gap-2 text-indigo-100/70 text-sm">
-            <Calendar size={16} className="text-indigo-400" />
+          <div className="flex items-center gap-2 text-wood/70 text-sm">
+            <Calendar size={16} className="text-indigo-600" />
             <span>{startTime.toLocaleDateString()}</span>
           </div>
-          <div className="flex items-center gap-2 text-indigo-100/70 text-sm">
-            <Clock size={16} className="text-indigo-400" />
+          <div className="flex items-center gap-2 text-wood/70 text-sm">
+            <Clock size={16} className="text-indigo-600" />
             <span>{startTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {endTime.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
           </div>
-          <div className="flex items-center gap-2 text-indigo-100/70 text-sm">
-            <Users size={16} className="text-indigo-400" />
-            <span>{session.participants.length} Participants</span>
+          <div className="flex items-center gap-2 text-wood/70 text-sm">
+            <Users size={16} className="text-indigo-600" />
+            <span>{session.participants?.length || 0} Participants</span>
           </div>
         </div>
       </div>
@@ -51,7 +53,7 @@ const SessionCard = ({ session }) => {
         target="_blank"
         rel="noopener noreferrer"
         className={`mt-6 w-full glass-button !py-3 flex items-center justify-center gap-2 font-bold uppercase tracking-widest text-xs ${
-          !isActive ? 'opacity-50 grayscale pointer-events-none' : 'hover:shadow-indigo-500/20'
+          !session.meetLink ? 'opacity-50 grayscale pointer-events-none' : 'hover:shadow-indigo-500/20 !bg-indigo-600 hover:!bg-indigo-700'
         }`}
       >
         <span>Join Session</span>

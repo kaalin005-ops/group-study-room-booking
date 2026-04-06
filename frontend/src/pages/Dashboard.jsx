@@ -31,14 +31,14 @@ const Dashboard = () => {
   const recentBookings = [...myBookings].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)).slice(0, 3);
 
   const stats = [
-    { label: 'Active Users', value: activeUsers.length, icon: Users, color: 'text-emerald-400' },
-    { label: 'Total Rooms', value: rooms.length, icon: LayoutDashboard, color: 'text-indigo-400' },
-    { label: 'My Bookings', value: myBookings.length, icon: Calendar, color: 'text-purple-400' },
-    { label: 'Live Sessions', value: activeSessions.length, icon: Video, color: 'text-rose-400' },
+    { label: 'Active Users', value: activeUsers.length, icon: Users, color: 'text-forest' },
+    { label: 'Total Rooms', value: rooms.length, icon: LayoutDashboard, color: 'text-wood' },
+    { label: 'My Bookings', value: myBookings.length, icon: Calendar, color: 'text-forest' },
+    { label: 'Live Sessions', value: activeSessions.length, icon: Video, color: 'text-rose-700' },
   ];
 
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen">
       <Navbar />
       <Sidebar />
 
@@ -47,18 +47,18 @@ const Dashboard = () => {
           {/* Header */}
           <div className="flex justify-between items-end">
             <div className="space-y-2">
-              <h1 className="text-5xl font-black text-white tracking-tighter">
-                Welcome, <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-400">{user?.name}</span>
+              <h1 className="text-5xl font-black text-wood tracking-tighter">
+                Welcome, <span className="text-forest">{user?.name}</span>
               </h1>
-              <p className="text-indigo-200/50 font-medium text-lg italic">Ready to make today's study session productive?</p>
+              <p className="text-wood/40 font-bold text-lg italic">Ready for a productive study session today?</p>
             </div>
             <div className="flex gap-4">
               <div className="relative group">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-indigo-400/50 group-focus-within:text-indigo-400" size={20} />
+                <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-wood/30 group-focus-within:text-forest transition-colors" size={20} />
                 <input 
                   type="text" 
                   placeholder="Search rooms..." 
-                  className="glass-input pl-12 w-64 focus:ring-4 focus:ring-indigo-500/10"
+                  className="glass-input pl-12 w-64 focus:ring-4 focus:ring-forest/10"
                 />
               </div>
             </div>
@@ -72,13 +72,13 @@ const Dashboard = () => {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: idx * 0.1 }}
-                className="glass-card p-6 flex items-center justify-between border-white/5"
+                className={`glass-card p-6 flex items-center justify-between !bg-white border-wood/5 transition-all duration-300 hover:scale-105 hover:border-gold/30 shadow-sm hover:shadow-xl shadow-wood/5`}
               >
                 <div>
-                  <p className="text-indigo-100/40 text-xs font-black uppercase tracking-widest mb-1">{stat.label}</p>
-                  <p className="text-4xl font-black text-white">{stat.value}</p>
+                  <p className="text-wood/30 text-[10px] font-black uppercase tracking-widest mb-1">{stat.label}</p>
+                  <p className="text-4xl font-black text-wood">{stat.value}</p>
                 </div>
-                <div className={`p-4 rounded-2xl bg-white/5 border border-white/10 ${stat.color}`}>
+                <div className={`p-4 rounded-2xl bg-forest/5 border border-forest/10 shadow-sm ${stat.color}`}>
                   <stat.icon size={28} />
                 </div>
               </motion.div>
@@ -90,11 +90,11 @@ const Dashboard = () => {
             {/* Left Column: Rooms */}
             <div className="lg:col-span-2 space-y-8">
               <div className="flex items-center justify-between">
-                <h2 className="text-3xl font-bold text-white tracking-tight flex items-center gap-3">
-                  <TrendingUp className="text-indigo-400" />
-                  Available Rooms
+                <h2 className="text-2xl font-black text-wood tracking-tight flex items-center gap-3 uppercase">
+                  <TrendingUp className="text-forest" />
+                  Available Spaces
                 </h2>
-                <button onClick={fetchRooms} className="text-indigo-400 text-sm font-bold hover:underline">View All</button>
+                <button onClick={fetchRooms} className="text-forest text-[10px] font-black uppercase tracking-widest hover:underline">Refresh List</button>
               </div>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {rooms.slice(0, 4).map((room) => (
@@ -107,9 +107,9 @@ const Dashboard = () => {
             <div className="space-y-10">
               {/* Active Sessions */}
               <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
-                  <Video className="text-rose-400" />
-                  Live Sessions
+                <h2 className="text-xl font-black text-wood tracking-tight flex items-center gap-3 uppercase">
+                  <Video className="text-rose-700" />
+                  Live Groups
                 </h2>
                 {activeSessions.length > 0 ? (
                   <div className="space-y-4">
@@ -118,32 +118,38 @@ const Dashboard = () => {
                     ))}
                   </div>
                 ) : (
-                  <div className="glass-card p-8 text-center space-y-3 opacity-60">
-                    <p className="text-indigo-100/60 font-medium">No active virtual sessions</p>
-                    <button className="text-indigo-400 text-xs font-black uppercase tracking-widest hover:text-indigo-300">Start Session +</button>
+                  <div className="glass-card p-8 text-center space-y-3 opacity-60 border-dashed border-2 !bg-transparent border-wood/10">
+                    <p className="text-wood/40 font-bold text-sm italic">No active virtual sessions</p>
+                    <button className="text-forest text-[10px] font-black uppercase tracking-widest hover:text-forest-light">Start Session +</button>
                   </div>
                 )}
               </div>
 
               {/* Recent Activity */}
               <div className="space-y-6">
-                <h2 className="text-2xl font-bold text-white tracking-tight flex items-center gap-3">
-                  <Clock className="text-indigo-400" />
+                <h2 className="text-xl font-black text-wood tracking-tight flex items-center gap-3 uppercase">
+                  <Clock className="text-forest" />
                   Recent Activity
                 </h2>
                 <div className="space-y-4">
-                  {recentBookings.map((booking) => (
-                    <div key={booking._id} className="glass-card p-4 flex items-center gap-4 border-white/5 hover:bg-white/10">
-                      <div className="w-12 h-12 rounded-xl bg-indigo-500/20 flex items-center justify-center border border-indigo-400/20 text-indigo-300">
+                  {recentBookings.map((booking, idx) => (
+                    <motion.div 
+                      key={booking._id} 
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: idx * 0.1 }}
+                      className={`glass-card p-4 flex items-center gap-4 !bg-white border-wood/5 hover:border-gold/20 transition-all shadow-sm hover:shadow-md`}
+                    >
+                      <div className={`w-12 h-12 rounded-xl flex items-center justify-center border transition-transform group-hover:scale-110 bg-forest/5 border-forest/10 text-forest`}>
                         {booking.bookingType === 'virtual' ? <Video size={20} /> : <Calendar size={20} />}
                       </div>
                       <div>
-                        <p className="text-sm font-bold text-white">{booking.roomId?.name || 'Study Room'}</p>
-                        <p className="text-[10px] font-medium text-indigo-100/40 uppercase tracking-widest">
+                        <p className="text-sm font-black text-wood tracking-tight">{booking.roomId?.name || 'Unknown Room'}</p>
+                        <p className="text-[10px] font-bold text-wood/30 uppercase tracking-widest">
                           {new Date(booking.startTime).toLocaleDateString()} • {new Date(booking.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                         </p>
                       </div>
-                    </div>
+                    </motion.div>
                   ))}
                 </div>
               </div>

@@ -3,12 +3,13 @@ import { motion } from 'framer-motion';
 import { useBooking } from '../context/BookingContext';
 import Sidebar from '../components/Sidebar';
 import Navbar from '../components/Navbar';
-import { Calendar, Video, Clock, MapPin, Trash2, ExternalLink, ShieldCheck, AlertCircle } from 'lucide-react';
+import { Calendar, Video, Clock, MapPin, Trash2, ExternalLink, ShieldCheck, AlertCircle, ArrowRight } from 'lucide-react';
 
 const MyBookings = () => {
-  const { myBookings, fetchMyBookings, cancelBooking } = useBooking();
+  const { myBookings, fetchMyBookings, cancelBooking, loading: bookingLoading } = useBooking();
 
   useEffect(() => {
+    console.log('MyBookings component mounted');
     fetchMyBookings();
   }, []);
 
@@ -24,118 +25,172 @@ const MyBookings = () => {
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'confirmed': return 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30';
-      case 'cancelled': return 'bg-rose-500/20 text-rose-400 border-rose-500/30';
-      default: return 'bg-indigo-500/20 text-indigo-400 border-indigo-500/30';
+      case 'confirmed': return 'bg-emerald-500/10 text-emerald-700 border-emerald-500/20 shadow-sm';
+      case 'cancelled': return 'bg-rose-500/10 text-rose-700 border-rose-500/20 shadow-sm';
+      default: return 'bg-amber-500/10 text-amber-700 border-amber-500/20 shadow-sm';
     }
   };
 
+  const getCardStyle = (type, index) => {
+    const styles = [
+      'border-forest/10 hover:border-forest/30',
+      'border-wood/10 hover:border-wood/30',
+      'border-gold/10 hover:border-gold/30',
+    ];
+    return styles[index % styles.length];
+  };
+
+  const getIconStyle = (type) => {
+    return type === 'virtual' 
+      ? 'text-rose-700 bg-rose-500/10 border-rose-500/20' 
+      : 'text-forest bg-forest/10 border-forest/20';
+  };
+
+  if (bookingLoading && (!myBookings || myBookings.length === 0)) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-paper">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-16 h-16 border-4 border-forest/10 border-t-forest rounded-full animate-spin" />
+          <p className="text-forest font-black tracking-widest animate-pulse uppercase text-[10px]">Retrieving Schedule...</p>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-paper">
       <Navbar />
       <Sidebar />
 
       <main className="pl-72 pt-28 pr-8 pb-12">
         <div className="max-w-7xl mx-auto space-y-12">
           {/* Header */}
-          <div className="space-y-2">
-            <h1 className="text-5xl font-black text-white tracking-tighter flex items-center gap-4">
-              <Calendar className="text-purple-400 w-12 h-12" />
-              My <span className="text-purple-400">Bookings</span>
-            </h1>
-            <p className="text-indigo-200/50 font-medium text-lg italic">Manage your scheduled study sessions and physical room reservations.</p>
-          </div>
+          <motion.div 
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="space-y-4"
+          >
+            <div className="flex items-center gap-6">
+              <div className="p-4 bg-forest/5 rounded-3xl border border-forest/10 shadow-sm">
+                <Calendar className="text-forest w-10 h-10" />
+              </div>
+              <div>
+                <h1 className="text-6xl font-black text-wood tracking-tighter uppercase leading-none">
+                  My <span className="text-forest">Schedule</span>
+                </h1>
+                <p className="text-wood/30 font-bold text-sm tracking-[0.2em] mt-2 uppercase">Your Academic Journey, Organized.</p>
+              </div>
+            </div>
+          </motion.div>
 
-          {myBookings.length > 0 ? (
-            <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+          {Array.isArray(myBookings) && myBookings.length > 0 ? (
+            <div className="grid grid-cols-1 xl:grid-cols-2 gap-10">
               {myBookings.map((booking, idx) => (
                 <motion.div
                   key={booking._id}
-                  initial={{ opacity: 0, x: idx % 2 === 0 ? -20 : 20 }}
-                  animate={{ opacity: 1, x: 0 }}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: idx * 0.1 }}
-                  className="glass-card p-8 flex flex-col md:flex-row gap-8 group border-white/5 hover:bg-white/10"
+                  whileHover={{ y: -8 }}
+                  className={`glass-card p-10 flex flex-col md:flex-row gap-8 group border !bg-white transition-all duration-500 ${getCardStyle(booking.bookingType, idx)}`}
                 >
                   {/* Left: Type Icon */}
                   <div className="flex-shrink-0">
-                    <div className={`w-20 h-20 rounded-[2rem] flex items-center justify-center border-2 shadow-2xl ${
-                      booking.bookingType === 'virtual' ? 'bg-rose-500/20 border-rose-500/30 text-rose-400' : 'bg-indigo-500/20 border-indigo-500/30 text-indigo-400'
-                    }`}>
-                      {booking.bookingType === 'virtual' ? <Video size={40} /> : <MapPin size={40} />}
+                    <div className={`w-24 h-24 rounded-[2.5rem] flex items-center justify-center border transition-all duration-500 group-hover:rotate-6 group-hover:scale-105 ${getIconStyle(booking.bookingType)}`}>
+                      {booking.bookingType === 'virtual' ? <Video size={48} /> : <MapPin size={48} />}
                     </div>
                   </div>
 
                   {/* Center: Details */}
-                  <div className="flex-grow space-y-6">
+                  <div className="flex-grow space-y-8">
                     <div className="flex justify-between items-start">
-                      <div className="space-y-1">
-                        <h3 className="text-2xl font-black text-white tracking-tight">{booking.roomId?.name || 'Study Room'}</h3>
-                        <p className="text-indigo-400 text-xs font-black uppercase tracking-[0.2em]">{booking.bookingType} Session</p>
+                      <div className="space-y-2">
+                        <h3 className="text-3xl font-black text-wood tracking-tighter group-hover:text-forest transition-colors">
+                          {booking.roomId?.name || 'Study Space'}
+                        </h3>
+                        <div className="flex items-center gap-3">
+                          <div className={`w-3 h-3 rounded-full ${booking.bookingType === 'virtual' ? 'bg-rose-500' : 'bg-forest'}`} />
+                          <p className="text-wood/40 font-black uppercase tracking-[0.3em] text-[10px]">
+                            {booking.bookingType} Session
+                          </p>
+                        </div>
                       </div>
-                      <span className={`px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest border ${getStatusColor(booking.status)}`}>
+                      <div className={`px-5 py-2 rounded-2xl text-[10px] font-black uppercase tracking-[0.2em] border transition-all duration-500 ${getStatusColor(booking.status)}`}>
                         {booking.status}
-                      </span>
+                      </div>
                     </div>
 
                     <div className="grid grid-cols-2 gap-6">
-                      <div className="flex items-center gap-3 text-indigo-100/70">
-                        <Calendar size={18} className="text-indigo-400" />
-                        <span className="text-sm font-bold">{new Date(booking.startTime).toLocaleDateString()}</span>
+                      <div className="flex flex-col gap-2 p-4 bg-paper rounded-3xl border border-wood/5 group-hover:border-wood/10 transition-colors">
+                        <Calendar size={18} className="text-forest" />
+                        <span className="text-sm font-black text-wood">{booking.startTime ? new Date(booking.startTime).toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' }) : 'No Date'}</span>
                       </div>
-                      <div className="flex items-center gap-3 text-indigo-100/70">
-                        <Clock size={18} className="text-indigo-400" />
-                        <span className="text-sm font-bold">
-                          {new Date(booking.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      <div className="flex flex-col gap-2 p-4 bg-paper rounded-3xl border border-wood/5 group-hover:border-wood/10 transition-colors">
+                        <Clock size={18} className="text-forest" />
+                        <span className="text-sm font-black text-wood">
+                          {booking.startTime ? new Date(booking.startTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'No Time'}
                         </span>
                       </div>
                     </div>
 
                     {booking.bookingType === 'virtual' && booking.status === 'confirmed' && (
-                      <a
+                      <motion.a
+                        whileHover={{ x: 10 }}
                         href={booking.meetLink}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="flex items-center gap-2 text-rose-400 hover:text-rose-300 font-black uppercase tracking-widest text-xs transition-all group"
+                        className="inline-flex items-center gap-3 px-6 py-3 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-rose-700 font-black uppercase tracking-[0.2em] text-[10px] rounded-2xl transition-all group/link"
                       >
-                        <ExternalLink size={16} />
-                        <span>Join Meeting Room</span>
-                        <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
-                      </a>
+                        <ExternalLink size={16} className="group-hover/link:rotate-12 transition-transform" />
+                        <span>Join Meeting</span>
+                        <ArrowRight size={14} className="group-hover/link:translate-x-1 transition-transform" />
+                      </motion.a>
                     )}
                   </div>
 
                   {/* Right: Actions */}
-                  <div className="flex md:flex-col justify-end gap-3 pt-6 md:pt-0 border-t md:border-t-0 md:border-l border-white/10 md:pl-6">
+                  <div className="flex md:flex-col justify-end gap-4 pt-8 md:pt-0 border-t md:border-t-0 md:border-l border-wood/5 md:pl-8">
                     {booking.status === 'confirmed' && (
                       <button
                         onClick={() => handleDelete(booking._id)}
-                        className="p-4 bg-rose-500/10 text-rose-400 rounded-2xl hover:bg-rose-500/20 border border-rose-500/20 transition-all shadow-lg hover:shadow-rose-500/10 group"
+                        className="p-5 bg-rose-500/5 text-rose-700 rounded-[1.5rem] hover:bg-rose-500/10 border border-rose-500/10 transition-all group/btn"
                         title="Cancel Booking"
                       >
-                        <Trash2 size={24} className="group-hover:scale-110 transition-transform" />
+                        <Trash2 size={28} className="group-hover/btn:scale-110 group-hover/btn:-rotate-12 transition-transform" />
                       </button>
                     )}
-                    <div className="p-4 bg-white/5 text-indigo-100/30 rounded-2xl border border-white/10">
-                      <ShieldCheck size={24} />
+                    <div className="p-5 bg-wood/5 text-wood/30 rounded-[1.5rem] border border-wood/10 hover:text-forest transition-all group/info">
+                      <ShieldCheck size={28} className="group-hover/info:scale-110 transition-transform" />
                     </div>
                   </div>
                 </motion.div>
               ))}
             </div>
           ) : (
-            <div className="glass-card p-32 text-center flex flex-col items-center gap-8 border-white/5 opacity-40">
-              <div className="p-10 bg-white/5 rounded-full border border-white/10 shadow-2xl">
-                <AlertCircle size={80} className="text-indigo-400/50" />
+            <motion.div 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="glass-card p-40 text-center flex flex-col items-center gap-10 border-wood/5 !bg-white shadow-xl"
+            >
+              <div className="relative">
+                <div className="absolute inset-0 bg-forest/5 blur-[60px] rounded-full" />
+                <div className="relative p-12 bg-paper rounded-full border border-wood/10 shadow-inner">
+                  <AlertCircle size={100} className="text-forest/40" />
+                </div>
               </div>
-              <div className="space-y-3">
-                <h3 className="text-3xl font-black text-white tracking-tighter uppercase">No Bookings Found</h3>
-                <p className="text-indigo-100/40 font-medium text-lg max-w-sm mx-auto">You haven't made any reservations yet. Start by booking a physical room or creating a virtual session.</p>
+              <div className="space-y-4">
+                <h3 className="text-5xl font-black text-wood tracking-tighter uppercase italic">No Active Sessions</h3>
+                <p className="text-wood/30 font-bold text-xl max-w-md mx-auto leading-relaxed">Your schedule is currently clear. Time to discover new study spaces!</p>
               </div>
-              <div className="flex gap-6">
-                <button className="text-indigo-400 font-black uppercase tracking-widest text-sm hover:underline hover:scale-105 transition-all">Go to Rooms</button>
-                <button className="text-rose-400 font-black uppercase tracking-widest text-sm hover:underline hover:scale-105 transition-all">Start Virtual Session</button>
+              <div className="flex gap-8 pt-6">
+                <button className="glass-button !py-5 !px-12 text-sm font-black uppercase tracking-[0.3em] shadow-xl hover:scale-105 transition-all active:scale-95">
+                  Discover Rooms
+                </button>
+                <button className="bg-paper border border-wood/10 !py-5 !px-12 rounded-2xl text-sm font-black uppercase tracking-[0.3em] text-wood/50 hover:bg-white hover:text-wood transition-all active:scale-95">
+                  New Session
+                </button>
               </div>
-            </div>
+            </motion.div>
           )}
         </div>
       </main>

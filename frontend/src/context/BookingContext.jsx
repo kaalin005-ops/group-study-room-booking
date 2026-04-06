@@ -20,11 +20,15 @@ export const BookingProvider = ({ children }) => {
   };
 
   const fetchMyBookings = async () => {
+    setLoading(true);
     try {
       const { data } = await API.get('/bookings/my');
-      setMyBookings(data);
+      setMyBookings(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error('Error fetching my bookings:', error);
+      setMyBookings([]);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -47,8 +51,8 @@ export const BookingProvider = ({ children }) => {
 
   const cancelBooking = async (id) => {
     try {
-      await API.delete(`/bookings/${id}`);
-      setMyBookings(myBookings.filter(b => b._id !== id));
+      const { data } = await API.delete(`/bookings/${id}`);
+      setMyBookings(myBookings.map(b => b._id === id ? { ...b, status: 'cancelled' } : b));
       if (socket) {
         socket.emit('roomBooked', { id, status: 'cancelled' });
       }

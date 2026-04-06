@@ -27,28 +27,34 @@ const Login = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-6 bg-gradient-to-br from-slate-900 via-indigo-900 to-purple-900 relative overflow-hidden">
+    <div className="min-h-screen flex items-center justify-center p-6 bg-paper relative overflow-hidden">
+      {/* Decorative Elements */}
+      <div className="absolute top-0 left-0 w-full h-full overflow-hidden -z-0">
+        <div className="absolute -top-24 -left-24 w-96 h-96 bg-forest/5 rounded-full blur-3xl" />
+        <div className="absolute -bottom-24 -right-24 w-96 h-96 bg-gold/5 rounded-full blur-3xl" />
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        className="w-full max-w-lg glass-morphism p-10 rounded-[3rem] shadow-2xl border border-white/20 relative z-10"
+        className="w-full max-w-lg glass-morphism p-12 rounded-[3.5rem] shadow-2xl border border-wood/10 relative z-10 !bg-white/80"
       >
         <Link to="/" className="flex items-center gap-3 justify-center mb-10 group">
-          <BookOpen className="w-10 h-10 text-indigo-400 group-hover:scale-110 transition-transform" />
-          <span className="text-3xl font-black tracking-tighter text-white">StudyRooms</span>
+          <BookOpen className="w-10 h-10 text-forest group-hover:scale-110 transition-transform" />
+          <span className="text-3xl font-black tracking-tighter text-wood uppercase">Study room booking</span>
         </Link>
 
         <div className="text-center mb-10 space-y-2">
-          <h2 className="text-4xl font-bold text-white tracking-tight">Welcome Back</h2>
-          <p className="text-indigo-200/60 font-medium">Please enter your details to login.</p>
+          <h2 className="text-4xl font-black text-wood tracking-tight uppercase italic">Welcome Back</h2>
+          <p className="text-wood/40 font-bold tracking-tight">Enter your credentials to enter the library.</p>
         </div>
 
         {error && (
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="mb-6 p-4 bg-rose-500/20 border border-rose-500/30 text-rose-300 rounded-2xl text-sm font-bold flex items-center gap-3"
+            className="mb-6 p-4 bg-rose-500/10 border border-rose-500/20 text-rose-700 rounded-2xl text-[10px] font-black uppercase tracking-widest flex items-center gap-3"
           >
             <div className="w-2 h-2 rounded-full bg-rose-500 animate-pulse" />
             {error}
@@ -57,13 +63,13 @@ const Login = () => {
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="space-y-2">
-            <label className="text-sm font-bold text-indigo-100 uppercase tracking-widest px-1">Email Address</label>
+            <label className="text-[10px] font-black text-wood/40 uppercase tracking-[0.3em] px-1">Institutional Email</label>
             <div className="relative group">
-              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-indigo-400/50 group-focus-within:text-indigo-400 transition-colors" size={20} />
+              <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-wood/20 group-focus-within:text-forest transition-colors" size={20} />
               <input
                 type="email"
                 required
-                className="w-full glass-input pl-12 focus:ring-4 focus:ring-indigo-500/20 text-lg py-4"
+                className="w-full glass-input pl-12 focus:ring-4 focus:ring-forest/10 text-lg py-4 !bg-white"
                 placeholder="student@university.edu"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -73,15 +79,15 @@ const Login = () => {
 
           <div className="space-y-2">
             <div className="flex justify-between items-center px-1">
-              <label className="text-sm font-bold text-indigo-100 uppercase tracking-widest">Password</label>
-              <Link to="#" className="text-xs font-bold text-indigo-400 hover:text-indigo-300">Forgot Password?</Link>
+              <label className="text-[10px] font-black text-wood/40 uppercase tracking-[0.3em]">Security Password</label>
+              <Link to="#" className="text-[10px] font-black text-forest hover:underline uppercase tracking-widest">Forgot?</Link>
             </div>
             <div className="relative group">
-              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-indigo-400/50 group-focus-within:text-indigo-400 transition-colors" size={20} />
+              <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-wood/20 group-focus-within:text-forest transition-colors" size={20} />
               <input
                 type="password"
                 required
-                className="w-full glass-input pl-12 focus:ring-4 focus:ring-indigo-500/20 text-lg py-4"
+                className="w-full glass-input pl-12 focus:ring-4 focus:ring-forest/10 text-lg py-4 !bg-white"
                 placeholder="••••••••"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -92,25 +98,25 @@ const Login = () => {
           <button
             type="submit"
             disabled={isLoading}
-            className="w-full glass-button !py-5 text-xl font-black uppercase tracking-[0.2em] shadow-xl hover:shadow-indigo-500/20 flex items-center justify-center gap-4 transition-all"
+            className="w-full glass-button !py-5 text-lg font-black uppercase tracking-[0.3em] shadow-xl hover:shadow-forest/20 flex items-center justify-center gap-4 transition-all"
           >
             {isLoading ? (
-              <div className="w-6 h-6 border-4 border-white/20 border-t-white rounded-full animate-spin" />
+              <div className="w-6 h-6 border-4 border-paper/20 border-t-paper rounded-full animate-spin" />
             ) : (
               <>
-                <span>Login Now</span>
+                <span>Enter Library</span>
                 <LogIn size={24} />
               </>
             )}
           </button>
         </form>
 
-        <div className="mt-10 pt-8 border-t border-white/10 text-center flex flex-col items-center gap-4">
-          <p className="text-indigo-100/50 font-medium">Don't have an account?</p>
-          <Link to="/register" className="flex items-center gap-2 text-white font-black uppercase tracking-widest hover:text-indigo-400 transition-colors group">
-            <UserPlus size={20} className="text-indigo-400" />
-            <span>Create New Account</span>
-            <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
+        <div className="mt-10 pt-8 border-t border-wood/5 text-center flex flex-col items-center gap-4">
+          <p className="text-wood/30 text-[10px] font-black uppercase tracking-widest">New to the network?</p>
+          <Link to="/register" className="flex items-center gap-2 text-forest font-black uppercase tracking-[0.2em] text-xs hover:text-wood transition-colors group">
+            <UserPlus size={18} />
+            <span>Create Academic Account</span>
+            <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
           </Link>
         </div>
       </motion.div>

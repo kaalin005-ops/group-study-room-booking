@@ -11,33 +11,33 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="w-64 glass-morphism h-screen fixed top-0 left-0 pt-24 px-4 border-r-0 rounded-r-3xl">
-      <div className="space-y-4">
+    <aside className="w-64 glass-morphism h-screen fixed top-0 left-0 pt-24 px-4 border-r border-wood/5 rounded-r-[2.5rem] !bg-white/80">
+      <div className="space-y-3">
         {menuItems.map((item) => (
           <NavLink
             key={item.path}
             to={item.path}
             className={({ isActive }) =>
-              `flex items-center space-x-3 p-4 rounded-xl transition-all duration-300 ${
+              `flex items-center space-x-3 p-4 rounded-2xl transition-all duration-300 ${
                 isActive
-                  ? 'bg-indigo-500/30 text-white shadow-lg border border-white/20'
-                  : 'text-indigo-100/70 hover:bg-white/10 hover:text-white'
+                  ? 'bg-forest text-white shadow-xl shadow-forest/20'
+                  : 'text-wood/60 hover:bg-wood/5 hover:text-wood font-semibold'
               }`
             }
           >
             <item.icon className="w-6 h-6" />
-            <span className="font-semibold tracking-wide">{item.name}</span>
+            <span className="font-bold tracking-tight">{item.name}</span>
           </NavLink>
         ))}
       </div>
 
-      <div className="absolute bottom-8 left-4 right-4 p-6 glass-card border-indigo-400/20">
-        <div className="flex items-center space-x-3 text-indigo-200">
+      <div className="absolute bottom-8 left-4 right-4 p-6 glass-card !bg-forest/5 border-forest/10">
+        <div className="flex items-center space-x-3 text-forest">
           <Users className="w-5 h-5" />
-          <span className="text-sm font-medium">Study Groups</span>
+          <span className="text-sm font-black uppercase tracking-widest">Study Network</span>
         </div>
-        <p className="text-xs text-indigo-300/60 mt-2 leading-relaxed">
-          Join active study sessions and boost your productivity together!
+        <p className="text-xs text-wood/60 mt-3 leading-relaxed font-medium">
+          Connect with peers and book the perfect quiet spot for your next session.
         </p>
       </div>
     </aside>
